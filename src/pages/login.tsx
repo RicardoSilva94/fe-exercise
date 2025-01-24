@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/navbar.tsx'
+import { useAuth } from  '../contexts/authContext.tsx'
 
 const LoginPage: React.FC = () => {
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [error, setError] = useState<string>('')
     const navigate = useNavigate()
+    const { login } = useAuth()
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -22,7 +24,7 @@ const LoginPage: React.FC = () => {
             })
 
             if (response.data.length > 0) {
-                localStorage.setItem('user', JSON.stringify(response.data[0]))
+                login(response.data[0])
                 navigate('/profile') 
                 console.log('Login successful')
             } else {
@@ -36,7 +38,8 @@ const LoginPage: React.FC = () => {
 
     return (
         <>
-        <Navbar user={null} onLogout={() => {}} />
+        <main className="flex-grow">
+        <Navbar />
         <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
             <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Sign In</h2>
@@ -77,6 +80,7 @@ const LoginPage: React.FC = () => {
                 </form>
             </div>
         </div>
+        </main>
         </>
     )
 }

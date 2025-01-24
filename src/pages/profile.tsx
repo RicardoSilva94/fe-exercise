@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../contexts/authContext.tsx'
 import Footer from '../components/footer.tsx'
 import Navbar from '../components/navbar.tsx'
 
@@ -13,24 +14,20 @@ interface Post {
 }
 
 const Profile: React.FC = () => {
-    const [user, setUser] = useState<any>(null)
     const [posts, setPosts] = useState<Post[]>([])
     const navigate = useNavigate()
+    const { user, logout } = useAuth()
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('user')
-        if (!storedUser) {
+        if (!user) {
             navigate('/login')
             return
         }
 
-        const parsedUser = JSON.parse(storedUser)
-        setUser(parsedUser)
-
         const fetchPosts = async () => {
             try {
                 const response = await axios.get(`http://localhost:5000/posts`, {
-                    params: { userId: parsedUser.id }
+                    params: { userId: user.id }
                 })
                 setPosts(response.data)
             } catch (error) {
@@ -39,10 +36,10 @@ const Profile: React.FC = () => {
         }
 
         fetchPosts()
-    }, [navigate])
+    }, [user, navigate])
 
     const handleLogout = () => {
-        localStorage.removeItem('user')
+        logout()
         navigate('/login')
     }
 
@@ -53,8 +50,9 @@ const Profile: React.FC = () => {
     if (!user) return null
 
     return (
-        <>
-        <Navbar user={user} onLogout={handleLogout} />
+        <>    
+        <main className="flex-grow">
+        <Navbar />
         <div className="container mx-auto p-6">
             <div className="bg-white shadow-md rounded-lg p-6">
                 <div className="flex justify-between items-center mb-6">
@@ -83,6 +81,7 @@ const Profile: React.FC = () => {
                 )}
             </div>
         </div>
+        </main>
         <Footer />
         </>
     )

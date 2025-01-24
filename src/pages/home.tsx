@@ -6,7 +6,7 @@ import Footer from '../components/footer.tsx';
 const Home: React.FC = () => {
     return (
         <div>
-            <Navbar user={null} onLogout={() => {}} />
+            <Navbar />
             <HeroSection />
             <Footer />
         </div>
