@@ -29,7 +29,12 @@ const Profile: React.FC = () => {
                 const response = await axios.get(`http://localhost:5000/posts`, {
                     params: { userId: user.id }
                 })
-                setPosts(response.data)
+
+                const sortedPosts = response.data.sort((a: Post, b: Post) => {
+                    return new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime()
+                })
+
+                setPosts(sortedPosts)
             } catch (error) {
                 console.error('Error fetching posts:', error)
             }
