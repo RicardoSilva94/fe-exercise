@@ -2,7 +2,12 @@ import React, { useState } from 'react'
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai'
 import { Link } from 'react-router-dom' 
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+    user: any
+    onLogout: () => void
+}
+
+const Navbar: React.FC<NavbarProps> = ({user, onLogout}) => {
     const [nav, setNav] = useState<boolean>(false)
 
     const handleNav = (): void => {
@@ -13,7 +18,7 @@ const Navbar: React.FC = () => {
         <div className='flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 text-black'>
             <h1 className='w-full text-3xl font-bold text-blue-600'>PostMania</h1>
             <ul className='hidden md:flex space-x-5 whitespace-nowrap'>
-                <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'>Home</li>
+                <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'> <Link to='/'>Home</Link></li>
                 <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'>Profile</li>
             <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'> <Link to='/login'>Sign in</Link> </li>
             </ul>
@@ -27,7 +32,7 @@ const Navbar: React.FC = () => {
             >
                 <h1 className='w-full text-3xl font-bold text-blue-600 m-4'>PostMania</h1>
                 <ul className='uppercase p-4'>
-                    <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'>Home</li>
+                    <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'> <Link to='/'>Home</Link></li>
                     <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'>Profile</li>
                     <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'> <Link to='/login'>Sign in</Link> </li>
                 </ul>

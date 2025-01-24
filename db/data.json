@@ -27,61 +27,71 @@
       "userId": "1",
       "postedAt": "2024-03-20T10:00:00",
       "title": "Exciting News!",
-      "text": "I'm thrilled to share that I've started a new journey!"
+      "text": "I'm thrilled to share that I've started a new journey!",
+      "id": "fcb5"
     },
     {
       "userId": "1",
       "postedAt": "2024-03-21T12:00:00",
       "title": "Tech Trends",
-      "text": "Here's my take on the latest in technology."
+      "text": "Here's my take on the latest in technology.",
+      "id": "5edc"
     },
     {
       "userId": "1",
       "postedAt": "2024-03-22T14:00:00",
       "title": "Health and Wellness",
-      "text": "Sharing some personal tips for staying healthy."
+      "text": "Sharing some personal tips for staying healthy.",
+      "id": "7716"
     },
     {
       "userId": "2",
       "postedAt": "2024-03-23T16:00:00",
       "title": "Travel Diaries",
-      "text": "Join me as I explore new places and cultures."
+      "text": "Join me as I explore new places and cultures.",
+      "id": "518c"
     },
     {
       "userId": "2",
       "postedAt": "2024-03-24T18:00:00",
       "title": "Art & Inspiration",
-      "text": "Exploring the intersection of art and inspiration."
+      "text": "Exploring the intersection of art and inspiration.",
+      "id": "6f54"
     },
     {
       "userId": "2",
       "postedAt": "2024-03-25T20:00:00",
       "title": "Coding Challenges",
-      "text": "I'm tackling new coding challenges. Here's what I've learned."
+      "text": "I'm tackling new coding challenges. Here's what I've learned.",
+      "id": "96ce"
     },
     {
       "userId": "3",
       "postedAt": "2024-03-26T10:00:00",
       "title": "Morning Routines",
-      "text": "How starting my day right makes all the difference."
+      "text": "How starting my day right makes all the difference.",
+      "id": "b34b"
     },
     {
       "userId": "3",
       "postedAt": "2024-03-27T12:00:00",
       "title": "Favorite Books",
-      "text": "Sharing a list of books that have impacted my life."
+      "text": "Sharing a list of books that have impacted my life.",
+      "id": "0bd8"
     },
     {
       "userId": "3",
       "postedAt": "2024-03-28T14:00:00",
       "title": "Photography Tips",
-      "text": "Some simple tips to up your photography game."
+      "text": "Some simple tips to up your photography game.",
+      "id": "85ba"
     },
     {
       "userId": "3",
       "postedAt": "2024-03-29T16:00:00",
       "title": "Productivity Hacks",
-      "text": "Discover the habits that boost my productivity."
+      "text": "Discover the habits that boost my productivity.",
+      "id": "3a61"
     }
   ]
 }
