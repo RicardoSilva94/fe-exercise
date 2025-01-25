@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/authContext.tsx'
 import Footer from '../components/footer.tsx'
 import Navbar from '../components/navbar.tsx'
+import NewPostModal from '../Modals/newPostModal.tsx'
+import DeletePostModal from '../Modals/deletePostModal.tsx'
+import { TrashIcon } from '@heroicons/react/20/solid'
 
 interface Post {
     id: number
@@ -17,35 +20,51 @@ const Profile: React.FC = () => {
     const [posts, setPosts] = useState<Post[]>([])
     const navigate = useNavigate()
     const { user } = useAuth()
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false)
+    const [postToDelete, setPostToDelete] = useState<Post | null>(null)
 
     useEffect(() => {
         const fetchPosts = async () => {
             try {
                 const response = await axios.get(`http://localhost:5000/posts`, {
                     params: { userId: user?.id }
-                });
-    
+                })
+
                 const sortedPosts = response.data.sort((a: Post, b: Post) => {
-                    return new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime();
-                });
-    
-                setPosts(sortedPosts);
+                    return new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime()
+                })
+
+                setPosts(sortedPosts)
             } catch (error) {
-                console.error('Error fetching posts:', error);
+                console.error('Error fetching posts:', error)
             }
-        };
-    
-        if (user) {
-            fetchPosts();
         }
-    }, [user]);
-    
+
+        if (user) {
+            fetchPosts()
+        }
+    }, [user])
 
     const formatDateTime = (datetime: string): string => {
-        return datetime.replace('T', ' ');
+        return datetime.replace('T', ' ')
     }
 
     if (!user) return null
+
+    const handleNewPost = (newPost: Post) => {
+        setPosts([newPost, ...posts])
+    }
+
+    const handleDeletePost = (postId: number) => {
+        // Filtra o post deletado da lista de posts
+        setPosts(posts.filter(post => post.id !== postId))
+    }
+
+    const openDeleteConfirmModal = (post: Post) => {
+        setPostToDelete(post)
+        setIsConfirmModalOpen(true)
+    }
 
     return (
         <>
@@ -63,7 +82,7 @@ const Profile: React.FC = () => {
                         <div className='flex justify-between items-center mb-4'>
                             <h2 className="text-xl font-semibold">Your Posts</h2>
                             <button
-                                onClick={() => navigate('/new-post')}
+                                onClick={() => setIsModalOpen(true)}
                                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
                             >
                                 Add New Post
@@ -80,7 +99,16 @@ const Profile: React.FC = () => {
                                     >
                                         <h3 className="font-bold text-lg mb-2">{post.title}</h3>
                                         <p>{post.text}</p>
-                                        <p className="text-sm text-gray-500 mt-2">Post Date: {formatDateTime(post.postedAt)}</p>
+                                        <div className="flex justify-between items-center">
+                                            <p className="text-sm text-gray-500 mt-2">Post Date: {formatDateTime(post.postedAt)}</p>
+                                            <button
+                                                onClick={() => openDeleteConfirmModal(post)}
+                                                className="bg-gray-400 hover:bg-red-500 text-white p-1 rounded cursor-pointer"
+                                            >
+                                                <TrashIcon className="w-6 h-6" />
+                                            </button>
+                                        </div>
+
                                     </div>
                                 ))}
                             </div>
@@ -88,6 +116,20 @@ const Profile: React.FC = () => {
                     </div>
                 </div>
             </main>
+
+            <NewPostModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onPostAdded={handleNewPost}
+            />
+
+            <DeletePostModal
+                isOpen={isConfirmModalOpen}
+                onClose={() => setIsConfirmModalOpen(false)}
+                postId={postToDelete?.id || 0}
+                onDelete={handleDeletePost}
+            />
+
             <Footer />
         </>
     )
