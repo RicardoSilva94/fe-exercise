@@ -16,37 +16,30 @@ interface Post {
 const Profile: React.FC = () => {
     const [posts, setPosts] = useState<Post[]>([])
     const navigate = useNavigate()
-    const { user, logout } = useAuth()
+    const { user } = useAuth()
 
     useEffect(() => {
-        if (!user) {
-            navigate('/login')
-            return
-        }
-
         const fetchPosts = async () => {
             try {
                 const response = await axios.get(`http://localhost:5000/posts`, {
-                    params: { userId: user.id }
-                })
-
+                    params: { userId: user?.id }
+                });
+    
                 const sortedPosts = response.data.sort((a: Post, b: Post) => {
-                    return new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime()
-                })
-
-                setPosts(sortedPosts)
+                    return new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime();
+                });
+    
+                setPosts(sortedPosts);
             } catch (error) {
-                console.error('Error fetching posts:', error)
+                console.error('Error fetching posts:', error);
             }
+        };
+    
+        if (user) {
+            fetchPosts();
         }
-
-        fetchPosts()
-    }, [user, navigate])
-
-    const handleLogout = () => {
-        logout()
-        navigate('/login')
-    }
+    }, [user]);
+    
 
     const formatDateTime = (datetime: string): string => {
         return datetime.replace('T', ' ');
@@ -55,39 +48,47 @@ const Profile: React.FC = () => {
     if (!user) return null
 
     return (
-        <>    
-        <main className="flex-grow">
-        <Navbar />
-        <div className="container mx-auto p-6">
-            <div className="bg-white shadow-md rounded-lg p-6">
-                <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-2xl font-bold">Profile</h1>
-                </div>
-                <div className="mb-6">
-                    <p><strong>Email:</strong> {user.email}</p>
-                </div>
+        <>
+            <main className="flex-grow">
+                <Navbar />
+                <div className="container mx-auto p-6">
+                    <div className="bg-white shadow-md rounded-lg p-6">
+                        <div className="flex justify-between items-center mb-6">
+                            <h1 className="text-2xl font-bold">Profile</h1>
+                        </div>
+                        <div className="mb-6">
+                            <p>Name:<strong> {user.firstName + ' ' + user.lastName}</strong></p>
+                        </div>
 
-                <h2 className="text-xl font-semibold mb-4">Your Posts</h2>
-                {posts.length === 0 ? (
-                    <p className="text-gray-500">No posts yet.</p>
-                ) : (
-                    <div className="space-y-4">
-                        {posts.map(post => (
-                            <div 
-                                key={post.id} 
-                                className="border p-4 rounded-lg bg-gray-50"
+                        <div className='flex justify-between items-center mb-4'>
+                            <h2 className="text-xl font-semibold">Your Posts</h2>
+                            <button
+                                onClick={() => navigate('/new-post')}
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
                             >
-                                <h3 className="font-bold text-lg mb-2">{post.title}</h3>
-                                <p>{post.text}</p>
-                                <p className="text-sm text-gray-500 mt-2">Post Date: {formatDateTime(post.postedAt)}</p>
+                                Add New Post
+                            </button>
+                        </div>
+                        {posts.length === 0 ? (
+                            <p className="text-gray-500">No posts yet.</p>
+                        ) : (
+                            <div className="space-y-4">
+                                {posts.map(post => (
+                                    <div
+                                        key={post.id}
+                                        className="border p-4 rounded-lg bg-gray-50"
+                                    >
+                                        <h3 className="font-bold text-lg mb-2">{post.title}</h3>
+                                        <p>{post.text}</p>
+                                        <p className="text-sm text-gray-500 mt-2">Post Date: {formatDateTime(post.postedAt)}</p>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
+                        )}
                     </div>
-                )}
-            </div>
-        </div>
-        </main>
-        <Footer />
+                </div>
+            </main>
+            <Footer />
         </>
     )
 }
