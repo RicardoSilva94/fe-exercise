@@ -5,10 +5,16 @@ import Footer from '../components/footer.tsx';
 
 const Home: React.FC = () => {
     return (
-        <div>
-            <Navbar />
-            <HeroSection />
-            <Footer />
+        <div className="flex flex-col min-h-screen">
+            <header>
+                <Navbar />
+            </header>
+            <main className="flex-grow">
+                <HeroSection />
+            </main>
+            <footer>
+                <Footer />
+            </footer>
         </div>
     );
 };
