@@ -35,6 +35,7 @@ const NewPostModal: React.FC<NewPostModalProps> = ({ isOpen, onClose, onPostAdde
         }
     }
 
+    // Resets the form fields
     const resetForm = () => {
         setTitle('')
         setText('')

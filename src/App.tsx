@@ -10,7 +10,7 @@ function App () {
 
   return (
     <>
-    <AuthProvider>
+    <AuthProvider> 
       <Router>
         <Routes>
           <Route path='/' element={<Home />} />

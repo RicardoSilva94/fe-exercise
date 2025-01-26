@@ -8,6 +8,7 @@ import DeletePostModal from '../Modals/deletePostModal.tsx'
 import EditPostModal from '../Modals/editPostModal.tsx'
 import { TrashIcon, PencilSquareIcon } from '@heroicons/react/20/solid'
 
+// Defines the Post structure
 export interface Post {
     id: number
     userId: number
@@ -22,9 +23,10 @@ const Profile: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false)
     const [postToDelete, setPostToDelete] = useState<Post | null>(null)
-    const [postToEdit, setPostToEdit] = useState<Post | null>(null); 
+    const [postToEdit, setPostToEdit] = useState<Post | null>(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false)
 
+    // Fetch posts when the user is loaded
     useEffect(() => {
         const fetchPosts = async () => {
             try {
@@ -47,31 +49,36 @@ const Profile: React.FC = () => {
         }
     }, [user])
 
+    // Formats the date and time
     const formatDateTime = (datetime: string): string => {
         return datetime.replace('T', ' ')
     }
 
     if (!user) return null
 
+    // Adds a new post to the list
     const handleNewPost = (newPost: Post) => {
         setPosts([newPost, ...posts])
     }
 
+    // Deletes a post from the list
     const handleDeletePost = (postId: number) => {
         setPosts(posts.filter(post => post.id !== postId))
     }
 
+    // Opens the delete confirmation modal
     const openDeleteConfirmModal = (post: Post) => {
         setPostToDelete(post)
         setIsConfirmModalOpen(true)
     }
 
+    // Opens the edit modal
     const openEditModal = (post: Post) => {
-        console.log("Post being passed to modal:", post);  // Verifique se os dados do post estão corretos
-        setPostToEdit(post) 
-        setIsEditModalOpen(true) 
+        setPostToEdit(post)
+        setIsEditModalOpen(true)
     }
 
+    // Updates a post in the list
     const handlePostUpdate = (updatedPost: Post) => {
         setPosts((prevPosts) =>
             prevPosts.map((post) =>

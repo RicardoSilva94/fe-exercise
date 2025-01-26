@@ -8,10 +8,12 @@ const Navbar: React.FC = () => {
     const { user, logout } = useAuth()
     const navigate = useNavigate()
 
+    // Function to handle the navigation menu when the user clicks on the menu button
     const handleNav = (): void => {
         setNav(!nav)
     }
 
+    // Function to handle logout when the user clicks on the logout button
     const handleLogout = () => {
         logout()
         navigate('/login')
@@ -21,15 +23,15 @@ const Navbar: React.FC = () => {
         <div className='flex justify-between items-center h-24 max-w-[1240px] mx-auto px-4 text-black'>
             <h1 className='w-full text-3xl font-bold text-blue-600'>PostMania</h1>
             <ul className='hidden md:flex space-x-5 whitespace-nowrap'>
-                <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'> 
+                <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'>
                     <Link to='/'>Home</Link>
                 </li>
                 {user ? (
                     <>
-                        <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'> 
+                        <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'>
                             <Link to='/profile'>Profile</Link>
                         </li>
-                        <li 
+                        <li
                             className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'
                             onClick={handleLogout}
                         >
@@ -37,7 +39,7 @@ const Navbar: React.FC = () => {
                         </li>
                     </>
                 ) : (
-                    <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'> 
+                    <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'>
                         <Link to='/login'>Sign in</Link>
                     </li>
                 )}
@@ -45,22 +47,21 @@ const Navbar: React.FC = () => {
             <div className='md:hidden' onClick={handleNav}>
                 {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
             </div>
-            <div 
-                className={`fixed left-0 top-0 w-[60%] h-full bg-white border-r-2 transition-transform duration-300 ${
-                    nav ? 'transform translate-x-0' : 'transform -translate-x-full'
-                }`}
+            <div
+                className={`fixed left-0 top-0 w-[60%] h-full bg-white border-r-2 transition-transform duration-300 ${nav ? 'transform translate-x-0' : 'transform -translate-x-full'
+                    }`}
             >
                 <h1 className='w-full text-3xl font-bold text-blue-600 m-4'>PostMania</h1>
                 <ul className='uppercase p-4'>
-                    <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'> 
+                    <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'>
                         <Link to='/'>Home</Link>
                     </li>
                     {user ? (
                         <>
-                            <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'> 
+                            <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'>
                                 <Link to='/profile'>Profile</Link>
                             </li>
-                            <li 
+                            <li
                                 className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'
                                 onClick={handleLogout}
                             >
@@ -68,7 +69,7 @@ const Navbar: React.FC = () => {
                             </li>
                         </>
                     ) : (
-                        <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'> 
+                        <li className='p-4 cursor-pointer hover:bg-blue-600 hover:text-white transition-colors duration-300'>
                             <Link to='/login'>Sign in</Link>
                         </li>
                     )}

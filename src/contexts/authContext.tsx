@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react'
 
+//Defines the User structure
 interface User {
   id: number;
   email: string;
@@ -7,19 +8,21 @@ interface User {
   lastName: string;
 }
 
+//Defines the AuthContextType structure
 interface AuthContextType {
   user: User | null;
   login: (userData: User) => void;
   logout: () => void;
 }
 
+//Creates the AuthContext
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  login: () => {},
-  logout: () => {}
+  login: () => { },
+  logout: () => { }
 })
 
-export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
@@ -39,6 +42,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }
     localStorage.removeItem('user')
   }
 
+  // Provides the AuthContext to the children components
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
       {children}
