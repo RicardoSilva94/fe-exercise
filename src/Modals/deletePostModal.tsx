@@ -27,8 +27,8 @@ const DeletePostModal: React.FC<DeletePostModalProps> = ({ isOpen, onClose, post
     if (!isOpen) return null
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-blue-500 bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg w-96">
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="bg-white p-6 rounded-lg w-96 border-1 border-blue-500">
                 <h2 className="text-xl font-bold mb-4">Delete Post</h2>
                 <p className="mb-4">Are you sure you want to delete this post?</p>
                 <div className="flex justify-end">

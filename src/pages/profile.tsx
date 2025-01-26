@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/authContext.tsx'
 import Footer from '../components/footer.tsx'
 import Navbar from '../components/navbar.tsx'
 import NewPostModal from '../Modals/newPostModal.tsx'
 import DeletePostModal from '../Modals/deletePostModal.tsx'
-import { TrashIcon } from '@heroicons/react/20/solid'
+import EditPostModal from '../Modals/editPostModal.tsx'
+import { TrashIcon, PencilSquareIcon } from '@heroicons/react/20/solid'
 
-interface Post {
+export interface Post {
     id: number
     userId: number
     title: string
@@ -18,11 +18,12 @@ interface Post {
 
 const Profile: React.FC = () => {
     const [posts, setPosts] = useState<Post[]>([])
-    const navigate = useNavigate()
     const { user } = useAuth()
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false)
     const [postToDelete, setPostToDelete] = useState<Post | null>(null)
+    const [postToEdit, setPostToEdit] = useState<Post | null>(null); 
+    const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false)
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -57,7 +58,6 @@ const Profile: React.FC = () => {
     }
 
     const handleDeletePost = (postId: number) => {
-        // Filtra o post deletado da lista de posts
         setPosts(posts.filter(post => post.id !== postId))
     }
 
@@ -65,6 +65,20 @@ const Profile: React.FC = () => {
         setPostToDelete(post)
         setIsConfirmModalOpen(true)
     }
+
+    const openEditModal = (post: Post) => {
+        console.log("Post being passed to modal:", post);  // Verifique se os dados do post estão corretos
+        setPostToEdit(post) 
+        setIsEditModalOpen(true) 
+    }
+
+    const handlePostUpdate = (updatedPost: Post) => {
+        setPosts((prevPosts) =>
+            prevPosts.map((post) =>
+                post.id === updatedPost.id ? updatedPost : post
+            )
+        );
+    };
 
     return (
         <>
@@ -100,14 +114,25 @@ const Profile: React.FC = () => {
                                         <h3 className="font-bold text-lg mb-2">{post.title}</h3>
                                         <p>{post.text}</p>
                                         <div className="flex justify-between items-center">
-                                            <p className="text-sm text-gray-500 mt-2">Post Date: {formatDateTime(post.postedAt)}</p>
-                                            <button
-                                                onClick={() => openDeleteConfirmModal(post)}
-                                                className="bg-gray-400 hover:bg-red-500 text-white p-1 rounded cursor-pointer"
-                                            >
-                                                <TrashIcon className="w-6 h-6" />
-                                            </button>
+                                            <p className="text-sm text-gray-500 mt-2">
+                                                Post Date: {formatDateTime(post.postedAt)}
+                                            </p>
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() => openEditModal(post)}
+                                                    className="bg-gray-400 hover:bg-lime-950 text-white p-1 rounded cursor-pointer"
+                                                >
+                                                    <PencilSquareIcon className="w-6 h-6" />
+                                                </button>
+                                                <button
+                                                    onClick={() => openDeleteConfirmModal(post)}
+                                                    className="bg-gray-400 hover:bg-red-500 text-white p-1 rounded cursor-pointer"
+                                                >
+                                                    <TrashIcon className="w-6 h-6" />
+                                                </button>
+                                            </div>
                                         </div>
+
 
                                     </div>
                                 ))}
@@ -128,6 +153,13 @@ const Profile: React.FC = () => {
                 onClose={() => setIsConfirmModalOpen(false)}
                 postId={postToDelete?.id || 0}
                 onDelete={handleDeletePost}
+            />
+
+            <EditPostModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                post={postToEdit || { id: 0, userId: 0, title: '', text: '', postedAt: '' }}
+                onUpdate={handlePostUpdate}
             />
 
             <Footer />

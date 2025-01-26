@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useAuth } from '../contexts/authContext.tsx'
+import type { Post } from '../pages/profile.tsx'
 
 interface NewPostModalProps {
     isOpen: boolean
     onClose: () => void
-    onPostAdded: (post: any) => void
+    onPostAdded: (post: Post) => void
 }
 
 const NewPostModal: React.FC<NewPostModalProps> = ({ isOpen, onClose, onPostAdded }) => {
@@ -16,11 +17,6 @@ const NewPostModal: React.FC<NewPostModalProps> = ({ isOpen, onClose, onPostAdde
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        
-        if (!title.trim() || !text.trim()) {
-            setError('Title and text are required')
-            return
-        }
 
         try {
             const response = await axios.post('http://localhost:5000/posts', {
@@ -42,7 +38,6 @@ const NewPostModal: React.FC<NewPostModalProps> = ({ isOpen, onClose, onPostAdde
     const resetForm = () => {
         setTitle('')
         setText('')
-        setError('')
     }
 
     if (!isOpen) return null
@@ -51,7 +46,6 @@ const NewPostModal: React.FC<NewPostModalProps> = ({ isOpen, onClose, onPostAdde
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-blue-500 bg-opacity-50">
             <div className="bg-white p-6 rounded-lg w-96">
                 <h2 className="text-xl font-bold mb-4">Create New Post</h2>
-                {error && <p className="text-red-500 mb-4">{error}</p>}
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label htmlFor="title" className="block mb-2">Title</label>
